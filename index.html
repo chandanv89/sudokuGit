@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+   <head>
+      <script src="sudoku.js"></script>
+      
+      <script>
+         var puzzle = "";
+         var solution = "";
+         
+         var generatePuzzle = function(difficulty){
+            if(difficulty == ""){
+               alert("Please select the difficulty level to generate the puzzle");
+               return 0;
+            }
+            puzzle = sudoku.generate(difficulty);
+            display(puzzle);
+         }
+         
+         var solvePuzzle = function(){
+            if(puzzle == ""){
+               alert("Please select the difficulty level to generate the puzzle");
+               return 0;
+            }
+            solution = sudoku.solve(puzzle);
+            display(solution);
+         }
+         
+         var display = function(board){
+            var boardEle = document.getElementById("board");
+            
+            if(document.getElementsByTagName("sudoku")[0])
+               boardEle.removeChild(document.getElementsByTagName("sudoku")[0])
+            
+            var brd = document.createElement('sudoku');
+            //brd.style.width = '100%';
+            //brd.setAttribute('border', '1');
+            var tBody = document.createElement('sudokuBody');
+            
+            var row, cell;
+            for(var i=0; i<9; i++){
+               row = document.createElement('tr');
+               for(var j=(i*9); j<(9*(i+1)); j++){
+                  cell = document.createElement('td');
+                  cell.setAttribute('class','given');
+                  cell.appendChild(document.createTextNode(board[j]))
+                  row.appendChild(cell)
+               }
+               tBody.appendChild(row);
+            }
+            
+            brd.appendChild(tBody);
+            boardEle.appendChild(brd);
+            
+            console.log(board);
+         }
+      </script>
+   </head>
+   <body>
+      <div id="container">
+         <table>
+            <tr>
+               <td>
+                  <select name="difficulty" value="Medium" onchange="generatePuzzle(value)">
+                     <option value="">Select Difficulty</option>
+                     <option value="easy">Easy</option>
+                     <option value="medium">Medium</option>
+                     <option value="hard">Hard</option>
+                     <option value="very-hard">Very Hard</option>
+                     <option value="insane">Insane</option>
+                     <option value="inhuman">Robot</option>
+                  </select>
+               </td>
+               <td><button id="solve" onclick="solvePuzzle()">Solve!</button></td>
+            </tr>
+            <tr colspan=2><td /></tr>
+            <tr colspan=2>
+               <td>
+                  <div id="board"></div>
+               </td>
+            </tr>
+         </table>
+      </div>
+   </body>
+</html>
